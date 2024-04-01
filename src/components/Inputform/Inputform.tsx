@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import './Inputform.css'
 
-const Inputform = ({onDateSelect, onCancel, isCountDownActive}) => {
+interface InputformProps {
+  onDateSelect: (date: number) => void;
+  onCancel: () => void;
+  isCountDownActive: boolean;
+}
+
+const Inputform: React.FC<InputformProps> = ({onDateSelect, onCancel, isCountDownActive}) => {
     const [date, setDate] = useState('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onDateSelect(date);
+        onDateSelect(new Date(date).getTime());
+    }
+
+    const handleClick = () => {
+      onDateSelect(new Date(date).getTime());
     }
   return (
    <>
@@ -21,7 +31,7 @@ const Inputform = ({onDateSelect, onCancel, isCountDownActive}) => {
   {
     !isCountDownActive ? 
     (
-        <button type='submit' className='button' onClick={() => onDateSelect(date)}>Start Timer</button>
+        <button type='submit' className='button' onClick={handleClick}>Start Timer</button>
     ) :
     (
         <button type='button' className='button' onClick={onCancel}>Cancel Timer</button>

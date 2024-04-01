@@ -14,16 +14,16 @@ const Homepage = () => {
     message: '',
   });
 
-  const [intervalId, setIntervalId] = useState(null)
+  const [intervalId, setIntervalId] = useState<number | null>(null)
 
-  const startCountdown = (targetDate) => {
+  const startCountdown = (targetDate: number) => {
     // clear any existing interval
-    clearInterval(intervalId);
+    clearInterval(intervalId!);
     const interval = setInterval(() => {
       const now = new Date();
       const target = new Date(targetDate)
       if(target > now) {
-        const distance = target - now;
+        const distance = target.getTime() - now.getTime();
         const days = Math.floor(distance/(1000 * 60 * 60 * 24))
         const hours = Math.floor(
           (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -70,7 +70,7 @@ const Homepage = () => {
     // cleanup on component unmount
     return () => {
       console.log('unmount minutes- ' , countdownData.minutes)
-      clearInterval(intervalId)
+      clearInterval(intervalId!)
     }
   }, [intervalId])
 
@@ -79,14 +79,14 @@ const Homepage = () => {
     audio.play();
   }
 
-  const handleDateSelect = (date:string) => {
+  const handleDateSelect = (date: number) => {
     console.log('start countdown')
     startCountdown(date)
   }
 
   const cancelTimer = () => {
     console.log('stop countdown', intervalId)
-    clearInterval(intervalId);
+    clearInterval(intervalId!);
     setIsCountDownActive(false);
     setCountdownData({
       days: 0,

@@ -1,6 +1,14 @@
 import './Countdowntimer.css'
 
-const CountdownTimer = ({countdownData}) => {
+interface CountdownData {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+    message: string;
+  }
+
+const CountdownTimer: React.FC<{countdownData : CountdownData}> = ({countdownData}) => {
   return (
    <>
    { !(countdownData.message.length > 0) ? (
